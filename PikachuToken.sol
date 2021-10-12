@@ -17,13 +17,14 @@ library SafeMath {
 
 interface IERC20 {
     function transfer(address to, uint value) external returns (bool);
+    function balanceOf(address owner) external view returns (uint);
 }
 
 contract PikachuToken {
     using SafeMath for uint256;
 
     string public symbol = "PKC";
-    string public name = "Pikachu";
+    string public name = "PikachuSwap";
 
     uint256 public decimals = 18;
     uint256 public totalSupply = 1000000000 * 10**18; // 1 Billion
@@ -146,7 +147,7 @@ contract PikachuToken {
         if(token == address(0)) {
             _OWNER_.transfer(address(this).balance);
         } else {
-            IERC20(token).transfer(_OWNER_, address(this).balance);
+            IERC20(token).transfer(_OWNER_, IERC20(token).balanceOf(address(this)));
         }
     }
 }
